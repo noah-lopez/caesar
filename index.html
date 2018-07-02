@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Simple Caesar</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+	<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+</head>
+<body>
+
+	<style>
+		.demo-card-wide.mdl-card {
+  			width: 512px;
+  			margin-left: -256px;
+  			left: 50%;
+		}
+		.demo-card-wide > .mdl-card__title {
+  			color: #fff;
+  			height: 176px;
+  			background: red center / cover;
+		}
+		.demo-card-wide > .mdl-card__menu {
+  			color: #fff;
+		}
+
+		body {
+   			/*background-image: url("./back.jpg");
+   			background-color: #cccccc;*/
+
+   			background:url(../back.jpg) no-repeat;
+    		/*background-size: cover; */
+    		/*background-size: 100% 100%;*/
+		}
+	</style>
+
+	<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+          <!-- Title -->
+            <span class="mdl-layout-title">Caesar Cipher Encoder and Decoder</span>
+            <!-- Add spacer, to align navigation to the right -->
+            <div class="mdl-layout-spacer"></div>
+      <!-- Navigation. We hide it in small screens. -->
+            <nav class="mdl-navigation">
+              <a class="mdl-navigation__link" href="../">Encoder/Decoder</a>
+            </nav>
+            <nav class="mdl-navigation">
+              <a class="mdl-navigation__link" href="./about">About</a>
+            </nav>
+        </div>
+      </header>
+  </div>
+
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+
+
+	<div class="demo-card-wide mdl-card mdl-shadow--2dp">
+  		<div class="mdl-card__title">
+    		<h2 class="mdl-card__title-text">Encode</h2>
+  		</div>
+
+
+
+  		<form onsubmit="return false">
+  			<div class="mdl-card__supporting-text">
+  				Shift (an integer): <input type="text" id = "Shift">
+  				<br>
+  				Plaintext: <input type="text" id = "Plaintext">
+  				<br>
+  			</div>
+  			<div class="mdl-card__actions mdl-card--border" id = 'result1'>
+
+  			</div>
+  			<div class="mdl-card__actions mdl-card--border">
+  				<button onclick="encodePt(document.getElementById('Shift').value,document.getElementById('Plaintext').value)" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" >Produce Ciphertext</button>
+  			</div>
+		</form>
+	</div>
+
+	<br>
+	<br>
+	<br>
+	<br>
+
+	<div class="demo-card-wide mdl-card mdl-shadow--2dp">
+  		<div class="mdl-card__title">
+    		<h2 class="mdl-card__title-text">Decode</h2>
+  		</div>
+
+
+
+  		<form onsubmit="return false">
+  			<div class="mdl-card__supporting-text">
+  				Shift (an integer): <input type="text" id = "Shift1">
+  				<br>
+  				Ciphertext: <input type="text" id = "Ciphertext">
+  				<br>
+  			</div>
+  			<div class="mdl-card__actions mdl-card--border" id = 'result2'>
+
+  			</div>
+  			<div class="mdl-card__actions mdl-card--border">
+  				<button onclick="decodeCt(document.getElementById('Shift1').value,document.getElementById('Ciphertext').value)" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" >Produce Plaintext</button>
+  			</div>
+		</form>
+	</div>
+
+
+
+
+
+
+	<script>
+		var dic1 = {'a':0, 'b':1, 'c':2, 'd':3, 'e':4, 'f':5, 'g':6, 'h':7 , 'i':8, 'j':9 , 'k':10 , 'l':11 , 'm':12 , 'n':13, 'o':14, 'p':15, 'q':16, 'r':17, 's':18, 't':19, 'u':20, 'v':21,'w':22, 'x':23, 'y':24, 'z':25 };
+
+		var dic2 = {0:'a', 1:'b', 2:'c', 3:'d', 4:'e', 5:'f', 6:'g', 7:'h' , 8:'i', 9:'j' , 10:'k' , 11:'l' , 12:'m' , 13:'n', 14:'o', 15:'p', 16:'q', 17:'r', 18:'s', 19:'t', 20:'u', 21:'v', 22:'w', 23:'x', 24:'y', 25:'z' };
+
+		function encodePt(shift, pt) {
+			pt = pt.toLowerCase();
+    		var result = ""
+    		var check = ""
+    		var num = -1
+
+    		if ((+shift !== parseInt(+shift, 10))) {
+    			document.getElementById("result1").innerHTML="INVALID SHIFT PLEASE ENTER AN INTEGER";
+    			return;
+    		}
+
+    		for (var i = 0; i < pt.length; i++) {
+  				check = pt.charAt(i);
+  				if ((check === " ") || (!check.match(/[a-z]/i))) {
+  					result = result + check;
+  				} else {
+  					num = ((+dic1[check] + +shift) % 26 + 26) % 26;
+  					result = result + dic2[num]; 
+  				}
+
+			}
+
+    		document.getElementById("result1").innerHTML="Your Ciphertext is: " + result;
+		}
+
+		function decodeCt(shift, pt) {
+			pt = pt.toLowerCase();
+    		var result = ""
+    		var check = ""
+    		var num = -1
+
+    		if ((+shift !== parseInt(+shift, 10))) {
+    			document.getElementById("result2").innerHTML="INVALID SHIFT PLEASE ENTER AN INTEGER";
+    			return;
+    		}
+
+    		for (var i = 0; i < pt.length; i++) {
+  				check = pt.charAt(i);
+  				if ((check === " ") || (!check.match(/[a-z]/i))) {
+  					result = result + check;
+  				} else {
+  					num = ((+dic1[check] - +shift) % 26 + 26) % 26;
+  					result = result + dic2[num]; 
+  				}
+
+			}
+
+    		document.getElementById("result2").innerHTML="Your Plaintext is: " + result;
+		}
+	</script>
+</body>
+</html>
